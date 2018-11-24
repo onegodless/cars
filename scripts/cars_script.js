@@ -101,7 +101,8 @@ class ManufacturerPool{
 
 window.onload = function(){
 	
-	var focusedLi = undefined;
+	var focused_man = undefined;
+	var focused_model = undefined;	
 
 	const text_manufacturer = document.getElementById("text_manufacturer");
 	
@@ -112,6 +113,7 @@ window.onload = function(){
 	
 	const text_model = document.getElementById("text_model");
 	const models_section = document.getElementById("models_section");
+	const models_list = document.getElementById("models_list");
 	const add_model_button = document.getElementById("add_model_button");
 	const del_model_button = document.getElementById("remove_model_button");
 	
@@ -119,18 +121,22 @@ window.onload = function(){
 	
 	function updateModels(){
 		
-		models_section.innerHTML = ""; //reset the list
-		const man_selected = newPool.getManufacturer(focusedLi.innerHTML)
+		models_section.innerHTML = ""; //resets the list
+		const man_selected = newPool.getManufacturer(focused_man.innerHTML);
 		const models_list = man_selected.getModels();
 		models_list.forEach(function(element){
-			models_section.innerHTML += "<p>" + element + "</p>"
+			const new_li = document.createElement("li");
+			new_li.setAttribute("class","li_model");
+			new_li.innerHTML = element;
+			new_li.addEventListener("click",focusModel);
+			models_section.appendChild(new_li);
 		});
 	}
 	
 	
 	function delModel(){
 	
-		const manufacturer = newPool.getManufacturer(focusedLi.innerHTML);
+		const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
 		manufacturer.removeModel(text_model.value);
 		updateModels();
 	}
@@ -138,30 +144,42 @@ window.onload = function(){
 	
 	function addModel(){
 		
-		const manufacturer = newPool.getManufacturer(focusedLi.innerHTML);
+		if(focused_man == undefined){
+			console.log("You have to select a manufacturer first.")
+		}
+		const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
 		manufacturer.addModel(text_model.value);
 		updateModels();
 	}
 	
 	
-	function focusLi(){
+	function focusMan(){
 		
-		if(focusedLi != undefined){
-			focusedLi.style.backgroundColor = "";
+		if(focused_man != undefined){
+			focused_man.style.backgroundColor = "";
 		}
-		focusedLi = this;
-		focusedLi.style.backgroundColor = "grey";
+		focused_man = this;
+		focused_man.style.backgroundColor = "grey";
 		updateModels(this.innerHTML);
 	}
 	
+	function focusModel(){
+		
+		if(focused_model != undefined){
+			focused_model.style.backgroundColor = "";
+		}
+		focused_model = this;
+		focused_model.style.backgroundColor = "grey";
+	}
 	
-	function updateMan(){
+	
+	function updateMan(man_li){
 		man_section.innerHTML = "";
 		const list = newPool.listManufacturers();
 		list.forEach(function(element){
 			const new_li = document.createElement("li");
 			new_li.setAttribute("class","li_man");
-			new_li.addEventListener("click",focusLi);
+			new_li.addEventListener("click",focusMan);
 			man_section.appendChild(new_li);
 			const attr = Object.values(element);
 			new_li.innerHTML = attr[0];
