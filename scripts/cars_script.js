@@ -86,7 +86,7 @@ class ManufacturerPool{
 		}
 	}
 	
-	get listManufacturers(){
+	listManufacturers(){
 		return this.manufacturers_array;
 	}
 	
@@ -101,49 +101,77 @@ class ManufacturerPool{
 
 window.onload = function(){
 	
-	/*const audi = new manufacturer("audi");
-	audi.addModel("a4");
-	const show = audi.getModels();
-	console.log(show);
-	audi.addModel("a4");
-	audi.addModel("a5");
-	console.log(show);
-	audi.removeModel("a4");
-	console.log(show);*/
-	/*createNewManufacturer("audi");
-	createNewManufacturer("mercedes");
-	createNewManufacturer("mercedes");
-	console.log(manufacturers_array);
-	manufacturers_array.forEach(function(element){
-		list = Object.values(element)
-		console.log(list[0]);
-	});*/
-	const pool = new ManufacturerPool();
-	pool.createNewManufacturer("audi");
-	pool.createNewManufacturer("mercedes");
-	pool.createNewManufacturer("audi");
-	list = pool.listManufacturers;
-	console.log(list);
-	pool.deleteManufacturer("mercedes");
-	console.log(list);
-	pool.createNewManufacturer("Porsche");
-	console.log(list);
-	pool.deleteManufacturer("audi");
-	pool.deleteManufacturer("opel");
-	console.log(list);
-	const manufacturer = pool.getManufacturer("Porsche");
-	manufacturer.addModel("911");
-	manufacturer.addModel("GT2");
-	const listMod = manufacturer.getModels();
-	console.log(listMod);
-	manufacturer.removeModel("911");
-	manufacturer.removeModel("cayman");
-	console.log(listMod);
-	manufacturer.addModel("GT2");
-	console.log(listMod);
-	console.log(list);
+	var focusedLi = undefined;
 
-
-
-
+	const text_manufacturer = document.getElementById("text_manufacturer");
+	
+	const man_section = document.getElementById("manufacturers_section");
+	const man_list = document.getElementById("manufacturers_list");
+	const add_man_button = document.getElementById("add_manufacturer_button");
+	const del_man_button = document.getElementById("remove_manufacturer_button");
+	
+	const text_model = document.getElementById("text_model");
+	const models_section = document.getElementById("models_section");
+	const add_model_button = document.getElementById("add_model_button");
+	const del_model_button = document.getElementById("remove_model_button");
+	
+	const newPool = new ManufacturerPool();
+	
+	function updateModels(){
+		
+		models_section.innerHTML = ""; //reset the list
+		const man_selected = newPool.getManufacturer(focusedLi.innerHTML)
+		const models_list = man_selected.getModels();
+		models_list.forEach(function(element){
+			models_section.innerHTML += "<p>" + element + "</p>"
+		});
+	}
+	
+	
+	function delModel(){
+	
+		const manufacturer = newPool.getManufacturer(focusedLi.innerHTML);
+		manufacturer.removeModel(text_model.value);
+		updateModels();
+	}
+	
+	
+	function addModel(){
+		
+		const manufacturer = newPool.getManufacturer(focusedLi.innerHTML);
+		manufacturer.addModel(text_model.value);
+		updateModels();
+	}
+	
+	
+	function focusLi(){
+		
+		if(focusedLi != undefined){
+			focusedLi.style.backgroundColor = "";
+		}
+		focusedLi = this;
+		focusedLi.style.backgroundColor = "grey";
+		updateModels(this.innerHTML);
+	}
+	
+	
+	function updateMan(){
+		man_section.innerHTML = "";
+		const list = newPool.listManufacturers();
+		list.forEach(function(element){
+			const new_li = document.createElement("li");
+			new_li.setAttribute("class","li_man");
+			new_li.addEventListener("click",focusLi);
+			man_section.appendChild(new_li);
+			const attr = Object.values(element);
+			new_li.innerHTML = attr[0];
+		});
+	}
+	
+	
+	add_man_button.addEventListener("click",function(){newPool.createNewManufacturer(text_manufacturer.value);updateMan()});
+	del_man_button.addEventListener("click",function(){newPool.deleteManufacturer(text_manufacturer.value);updateMan()});
+	
+	add_model_button.addEventListener("click",addModel);
+	del_model_button.addEventListener("click",delModel);
 }
