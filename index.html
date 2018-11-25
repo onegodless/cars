@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head lang="es">
-	<script src="scripts/cars_script.js"></script>
+	<script src="scripts/cars_script.js" rel="javascript" type="text/javascript"></script>
+	<link href="style/index_style.css" rel="stylesheet" type="text/css">
 	<meta charset="UTF-8">
 	<title>Coches</title>
 </head>
@@ -9,6 +10,7 @@
 	<header>
 	</header>
 	<main>
+		<h1>Inventario del comercio de alquiler de coches: 	</h1>
 		<section>
 			<form>
 				<fieldset>
@@ -24,14 +26,22 @@
 				</fieldset>
 				<fieldset>
 					<legend>Edición: </legend>
-					<label for="text_manufacturer">manufacturer: </label>
+					<label for="text_manufacturer">Manufacturador: </label>
 					<input type="text" id="text_manufacturer">
 					<button type="button" id="add_manufacturer_button">Añadir</button>
 					<button type="button" id="remove_manufacturer_button">Eliminar</button>
-					<label for="text_model">model: </label>
+					<label for="text_model">Modelo: </label>
 					<input type="text" id="text_model">
 					<button type="button" id="add_model_button">Añadir</button>
 					<button type="button" id="remove_model_button">Eliminar</button>
+				</fieldset>
+				<fieldset>
+					<legend>Estado: </legend>
+					<section id="estado_section"></section>
+				</fieldset>
+				<fieldset>
+					<legend>Logger: </legend>
+					<section id="logger_section"></section>
 				</fieldset>
 			</form>
 		</section>
