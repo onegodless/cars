@@ -1,0 +1,35 @@
+body{
+	
+}
+li{
+		list-style: none;
+}
+#manufacturers_section{
+	display: inline-block;
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid black;
+	text-align: center;
+	min-height: 100px;
+	min-width: 100px;
+	vertical-align: top;
+}
+#models_section{
+	display: inline-block;
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid black;
+	text-align: center;
+	min-height: 100px;
+	min-width: 100px;
+	vertical-align: top;
+}
+label{
+	display: block;
+	margin: 5px;
+}
+input{
+	display: block;
+	margin: 5px;
+	
+}

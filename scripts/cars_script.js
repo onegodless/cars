@@ -1,5 +1,5 @@
 /**
- * script for index.html
+ * Script for index.html
  */
 
 
@@ -98,7 +98,6 @@ class ManufacturerPool{
 	
 }
 
-
 window.onload = function(){ //main function.
 	
 	var focused_man = undefined; //manufactured clicked by the user.
@@ -119,80 +118,79 @@ window.onload = function(){ //main function.
 	
 	const newPool = new ManufacturerPool(); //Pool of manufacturers.
 	
-	function updateModels(){ 
+	function updateMan(){
+		//This function is called everytime a manufacturer is added or removed.
+		//It prints every manufacturer.		
+				man_section.innerHTML = "";
+				const list = newPool.listManufacturers();
+				list.forEach(function(element){
+					const new_li = document.createElement("li");
+					new_li.setAttribute("class","li_man");
+					new_li.addEventListener("click",focusMan);
+					man_section.appendChild(new_li);
+					const attr = Object.values(element);
+					new_li.innerHTML = attr[0];
+				});
+			}
+	
+	
+function updateModels(){ 
 //This function is called everytime a model is added or removed.
 //It prints every model of the manufactured clicked by the user.		
-		models_section.innerHTML = ""; //Resets the list.
-		const man_selected = newPool.getManufacturer(focused_man.innerHTML);
-		const models_list = man_selected.getModels();
-		models_list.forEach(function(element){
-			const new_li = document.createElement("li");
-			new_li.setAttribute("class","li_model");
-			new_li.innerHTML = element;
-			new_li.addEventListener("click",focusModel);
-			models_section.appendChild(new_li);
-		});
+	models_section.innerHTML = ""; //Resets the list.
+	const man_selected = newPool.getManufacturer(focused_man.innerHTML);
+	const models_list = man_selected.getModels();
+	models_list.forEach(function(element){
+		const new_li = document.createElement("li");
+		new_li.setAttribute("class","li_model");
+		new_li.innerHTML = element;
+		new_li.addEventListener("click",focusModel);
+		models_section.appendChild(new_li);
+	});
+}
+
+
+function delModel(){
+
+	const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
+	manufacturer.removeModel(text_model.value);
+	updateModels();
+}
+
+
+function addModel(){ //
+	
+	if(focused_man == undefined){
+		console.log("You have to select a manufacturer first.")
 	}
-	
-	
-	function delModel(){
-	
-		const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
-		manufacturer.removeModel(text_model.value);
-		updateModels();
-	}
-	
-	
-	function addModel(){ //
-		
-		if(focused_man == undefined){
-			console.log("You have to select a manufacturer first.")
-		}
-		const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
-		manufacturer.addModel(text_model.value);
-		updateModels();
-	}
-	
-	
-	function focusMan(){
+	const manufacturer = newPool.getManufacturer(focused_man.innerHTML);
+	manufacturer.addModel(text_model.value);
+	updateModels();
+}
+
+
+function focusMan(){
 //Asigns the manufactured clicked by the user to the variable: focused_man.
 //Changes the background color of that manufactuer to grey.		
-		if(focused_man != undefined){
-			focused_man.style.backgroundColor = "";
-		}
-		focused_man = this;
-		focused_man.style.backgroundColor = "grey";
-		updateModels(this.innerHTML);
+	if(focused_man != undefined){
+		focused_man.style.backgroundColor = "";
 	}
-	
-	function focusModel(){
+	focused_man = this;
+	focused_man.style.backgroundColor = "grey";
+	updateModels(this.innerHTML);
+}
+
+function focusModel(){
 //Asigns the model clicked by the user to the variable: focused_model.
 //Changes the background color of that model to grey.				
-		if(focused_model != undefined){
-			focused_model.style.backgroundColor = "";
-		}
-		focused_model = this;
-		focused_model.style.backgroundColor = "grey";
+	if(focused_model != undefined){
+		focused_model.style.backgroundColor = "";
 	}
-	
-	
-	function updateMan(){
-//This function is called everytime a manufacturer is added or removed.
-//It prints every manufacturer.		
-		man_section.innerHTML = "";
-		const list = newPool.listManufacturers();
-		list.forEach(function(element){
-			console.log("hola");
-			const new_li = document.createElement("li");
-			new_li.setAttribute("class","li_man");
-			new_li.addEventListener("click",focusMan);
-			man_section.appendChild(new_li);
-			const attr = Object.values(element);
-			new_li.innerHTML = attr[0];
-		});
-	}	
-	
-	
+	focused_model = this;
+	focused_model.style.backgroundColor = "grey";
+}
+
+ 
 	add_man_button.addEventListener("click",function(){newPool.createNewManufacturer(text_manufacturer.value);updateMan()});
 	del_man_button.addEventListener("click",function(){newPool.deleteManufacturer(text_manufacturer.value);updateMan()});
 	
